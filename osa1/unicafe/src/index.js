@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 import ReactDOM from 'react-dom'
-
-
+import './index.css'
 const Button = ({onClick, text}) => (
     <button onClick={onClick}>
         {text}
@@ -10,9 +9,9 @@ const Button = ({onClick, text}) => (
 
 const Statistic = (props) => {
     return (
-        <p>
-            {props.text} {props.value}
-        </p>
+        <tr>
+            <td>{props.text}</td> <td>{props.value}</td>
+        </tr>
     )
 };
 
