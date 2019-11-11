@@ -40,6 +40,8 @@ const App = (props) => {
             <h1>Anecdote with most votes</h1>
             <br/>
             {props.anecdotes[indexWithHighestScore]}
+            <br/>
+            has {points[indexWithHighestScore]} votes
         </div>
     )
 }
