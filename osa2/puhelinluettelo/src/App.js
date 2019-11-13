@@ -5,7 +5,7 @@ import Filter from "./componets/Filter";
 import axios from 'axios'
 
 
-const App = ({data}) => {
+const App = () => {
 
     const [persons, setPersons] = useState([])
     const [newName, setNewName] = useState('')
