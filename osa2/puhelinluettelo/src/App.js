@@ -1,19 +1,27 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import PersonForm from "./componets/PersonForm";
 import Persons from "./componets/Persons";
 import Filter from "./componets/Filter";
+import axios from 'axios'
 
-const App = () => {
-    const [persons, setPersons] = useState([
-        {name: 'Arto Hellas', number: '040-123456'},
-        {name: 'Ada Lovelace', number: '39-44-5323523'},
-        {name: 'Dan Abramov', number: '12-43-234345'},
-        {name: 'Mary Poppendieck', number: '39-23-6423122'}
-    ])
+
+const App = ({data}) => {
+
+    const [persons, setPersons] = useState([])
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
-    const [filteredPersons, setFilteredPersons] = useState(persons)
     const [filterExp, setFilterExp] = useState('')
+
+    const hook = () => {
+        console.log('effect')
+        axios
+            .get('http://localhost:3001/persons')
+            .then(response => {
+                console.log('promise fulfilled')
+                setPersons(response.data)
+            })
+    }
+    useEffect(hook, [])
 
     const handleNameChange = (event) => {
         setNewName(event.target.value)
@@ -25,14 +33,6 @@ const App = () => {
 
     const handleFilterChange = (event) => {
         setFilterExp(event.target.value)
-        let pattern = new RegExp(event.target.value, 'i')
-        let filteredPersonsCopy = []
-
-        persons.forEach((person) => {
-            console.log(person)
-            if (pattern.test(person.name) | pattern.test(person.number)) filteredPersonsCopy.push(person)
-        })
-        setFilteredPersons(filteredPersonsCopy)
     }
 
     const addNewName = (event) => {
@@ -52,8 +52,21 @@ const App = () => {
 
     };
 
+    const filterHandle = () => {
+        let pattern = new RegExp(filterExp, 'i')
+        let filteredPersonsCopy = []
+
+        persons.forEach((person) => {
+            if (pattern.test(person.name) | pattern.test(person.number)) filteredPersonsCopy.push(person)
+        })
+
+        return filteredPersonsCopy
+
+    }
 
     console.log('rendering app...')
+
+
     return (
         <div>
             <h2>Phonebook</h2>
@@ -65,7 +78,7 @@ const App = () => {
                         addNewName={addNewName} newName={newName} newNumber={newNumber}/>
 
             <h2>Numbers</h2>
-            <Persons persons={filteredPersons}/>
+            <Persons persons={filterHandle()}/>
         </div>
     )
 

@@ -9,7 +9,6 @@ const Person = ({person}) => {
 }
 
 const Persons = (props) => {
-    console.log(props)
     return (
         <div>
             {props.persons.map(person => <Person key={person.name} person={person}/>)}
