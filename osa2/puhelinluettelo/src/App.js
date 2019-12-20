@@ -47,7 +47,7 @@ const App = () => {
                     console.log(error)
                     removePersonLocally(name)
                     setNotificationMessage(
-                        `Information of ${newName} has already been removed from the server`
+                        `${error.response.data.error}`
                     )
                     setNotificationStyle("error")
                     setTimeout(() => {
@@ -57,7 +57,6 @@ const App = () => {
                 })
         }
     }
-
     const addNewName = (event) => {
         console.log('onSubmit called')
         event.preventDefault()
@@ -87,17 +86,23 @@ const App = () => {
                     }, 5000)
                 })
                 .catch(error => {
-                    console.log('Error', error)
+                    setNotificationMessage(
+                        `${error.response.data.error}`
+                    )
+                    setNotificationStyle("error")
+                    setTimeout(() => {
+                        setNotificationMessage(null)
+                        setNotificationStyle(null)
+                    }, 5000)
                 })
         } else if (window.confirm(`${newName} is already in phonebook, replace the old number with new one?`)) {
             const personToUpdate = persons.find(p => p.name === newName)
-            const changedPerson = { ...personToUpdate, number: newNumber}
+            const changedPerson = {...personToUpdate, number: newNumber}
             personService
                 .update(personToUpdate.id, changedPerson)
                 .catch(error => {
-                    console.log(error)
                     setNotificationMessage(
-                        `Information of ${newName} has already been removed from the server`
+                        `${error.response.data.error}`
                     )
                     setNotificationStyle("error")
                     setTimeout(() => {
@@ -145,7 +150,7 @@ const App = () => {
         <div>
             <h2>Phonebook</h2>
 
-            <Notification message={notificationMessage} style={notificationStyle} />
+            <Notification message={notificationMessage} style={notificationStyle}/>
 
             <Filter handleFilterChange={handleFilterChange}
                     filterExp={filterExp}/>
