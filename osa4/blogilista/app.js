@@ -1,5 +1,4 @@
 const config = require('./utils/config')
-const http = require('http')
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
@@ -9,12 +8,12 @@ const middleware = require('./utils/middleware')
 const mongoose = require('mongoose')
 
 mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true })
-    .then(() => {
-        console.log('connected to MongoDB')
-    })
-    .catch((error) => {
-        console.log('error connection to MongoDB:', error.message)
-    })
+  .then(() => {
+    console.log('connected to MongoDB')
+  })
+  .catch((error) => {
+    console.log('error connection to MongoDB:', error.message)
+  })
 
 app.use(cors())
 app.use(express.static('build'))
