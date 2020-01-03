@@ -25,6 +25,22 @@ const dummyBlogs = [
     __v: 0
   },
   {
+    _id: '5a422b3a1b54a676234d17d2',
+    title: 'Canonical string reduction vol. 2',
+    author: 'Edsger W. Dijkstra',
+    url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+    likes: 9,
+    __v: 0
+  },
+  {
+    _id: '5a422b3a1b54a676234d17d3',
+    title: 'Canonical string reduction vol. 3',
+    author: 'Edsger W. Dijkstra',
+    url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+    likes: 12,
+    __v: 0
+  },
+  {
     _id: '5a422b891b54a676234d17fa',
     title: 'First class tests',
     author: 'Robert C. Martin',
@@ -49,7 +65,7 @@ const dummyBlogs = [
     __v: 0
   }
 ]
-const dummyBlogsTotalLikes = 36
+const dummyBlogsTotalLikes = 57
 const dummyListWithOneBlog = [
   {
     _id: '5a422aa71b54a676234d17f8',
@@ -83,5 +99,38 @@ describe('total likes', () => {
   test('of a bigger list is calculated right', () => {
     const result = listHelper.totalLikes(dummyBlogs)
     expect(result).toBe(dummyBlogsTotalLikes)
+  })
+})
+
+describe('favorite blog', () => {
+  test('is detected right', () => {
+    const result = listHelper.favoriteBlog(dummyBlogs)
+    expect(result).toEqual(
+      {
+        title: 'Canonical string reduction',
+        author: 'Edsger W. Dijkstra',
+        likes: 12
+      }
+    )
+  })
+  test('of empty list returns null', () => {
+    const result = listHelper.favoriteBlog(dummyBlogsEmpty)
+    expect(result).toBe(null)
+  })
+})
+
+describe('most blogs', () => {
+  test('is detected right', () => {
+    const result = listHelper.mostBlogs(dummyBlogs)
+    expect(result).toEqual(
+      {
+        author: 'Edsger W. Dijkstra',
+        blogs: 4
+      }
+    )
+  })
+  test('of empty list returns null', () => {
+    const result = listHelper.mostBlogs(dummyBlogsEmpty)
+    expect(result).toBe(null)
   })
 })
