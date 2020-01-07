@@ -14,22 +14,18 @@ const totalLikes = (blogs) => {
       return a + b
     })
   }
-
 }
 
 const favoriteBlog = (blogs) => {
-
   if (blogs.length === 0) {
     return null
   } else {
     const result = Math.max.apply(Math, blogs.map(function (blog) {
       return blog.likes
     }))
-
     const object = blogs.find(function (blog) {
       return blog.likes === result
     })
-
     return {
       title: object.title,
       author: object.author,
@@ -46,10 +42,33 @@ const mostBlogs = (blogsArr) => {
       return blog.author
     })
     const remap = Object.keys(countByArr).map(el => ({ author: el, blogs: countByArr[el] }))
-    const resultObject = _.maxBy(remap, function (o) {
+    return _.maxBy(remap, function (o) {
       return o.blogs
     })
-    return resultObject
+  }
+}
+
+
+const mostLikes = (blogsArr) => {
+  if (blogsArr.length === 0) {
+    return null
+  } else {
+    const resultArr = []
+    _.forIn(blogsArr, (blog) => {
+      if (!resultArr.map(el => (el.author)).includes(blog.author)) {
+        resultArr.push({ author: blog.author, likes: blog.likes })
+      } else {
+        const index = _.findIndex(resultArr, function (o) {
+          return o.author === blog.author
+        })
+        const sumLikes = resultArr[index].likes + blog.likes
+        const replace = { author: blog.author, likes: sumLikes }
+        resultArr.splice(index, 1, replace)
+      }
+    })
+    return _.maxBy(resultArr, function (o) {
+      return o.likes
+    })
   }
 }
 
@@ -57,5 +76,6 @@ module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }

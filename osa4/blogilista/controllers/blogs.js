@@ -5,7 +5,7 @@ blogsRouter.get('/', (request, response) => {
   Blog
     .find({})
     .then(blogs => {
-      response.json(blogs)
+      response.json(blogs.map(blog => blog.toJSON()))
     })
     .catch(error => next(error))
 })
@@ -19,6 +19,14 @@ blogsRouter.post('/', (request, response) => {
       response.status(201).json(result)
     })
     .catch(error => next(error))
+})
+
+blogsRouter.delete('/:id', (req, res, next) => {
+  Blog.findByIdAndRemove(req.params.id)
+    .then(result => {
+      console.log('Blog found and deleted with ID ', req.params.id, result)
+      res.status(204).end()
+    }).catch(error => next(error))
 })
 
 module.exports = blogsRouter
